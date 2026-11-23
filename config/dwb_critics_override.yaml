@@ -1,6 +1,8 @@
 controller_server:
   ros__parameters:
     current_goal_checker: "goal_checker"
+    FollowPath:
+      critics: ["RotateToGoal", "Oscillation", "BaseObstacle", "GoalAlign", "PathAlign", "PathDist", "GoalDist"]
 
 local_costmap:
   local_costmap:

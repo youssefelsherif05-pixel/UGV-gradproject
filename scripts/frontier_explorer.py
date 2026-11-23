@@ -4,6 +4,7 @@ from rclpy.node import Node
 from nav_msgs.msg import OccupancyGrid
 from geometry_msgs.msg import PoseStamped
 from nav2_msgs.action import NavigateToPose
+from action_msgs.msg import GoalStatus
 from rclpy.action import ActionClient
 import numpy as np
 
@@ -18,6 +19,7 @@ class FrontierExplorer(Node):
         self.map = None
         self.map_info = None
         self.exploring = False
+        self.tried_goals = []
 
     def map_callback(self, msg):
         if self.exploring:
@@ -28,7 +30,24 @@ class FrontierExplorer(Node):
         if not frontiers:
             self.get_logger().info("No frontiers found")
             return
-        goal = self.frontier_to_goal(frontiers[0])
+        goal = None
+        for cell in frontiers:
+            candidate = self.frontier_to_goal(cell)
+            x = candidate.pose.position.x
+            y = candidate.pose.position.y
+            if all((x - px)**2 + (y - py)**2 >= 1.0
+                   for px, py in self.tried_goals):
+                goal = candidate
+                break
+
+        if goal is None:
+            self.get_logger().info("No new frontier at least 1 m from tried goals")
+            return
+
+        self.tried_goals.append((goal.pose.position.x, goal.pose.position.y))
+        self.get_logger().info(
+            f"Selected frontier ({goal.pose.position.x:.2f}, "
+            f"{goal.pose.position.y:.2f})")
         self.send_goal(goal)
         self.exploring = True
 
@@ -72,7 +91,11 @@ class FrontierExplorer(Node):
         result_future.add_done_callback(self.result_callback)
 
     def result_callback(self, future):
-        self.get_logger().info("Goal reached")
+        status = future.result().status
+        if status == GoalStatus.STATUS_SUCCEEDED:
+            self.get_logger().info("Goal reached")
+        else:
+            self.get_logger().warn(f"Goal finished with status {status}")
         self.exploring = False
 
 def main():

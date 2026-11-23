@@ -26,7 +26,7 @@ def generate_launch_description():
         PythonLaunchDescriptionSource(
             os.path.join(pkg_share, 'launch', 'navigation_launch.py')
         ),
-        launch_arguments={'use_sim_time': 'true'}.items()
+        launch_arguments={'use_sim_time': 'true', 'params_file': os.path.join(pkg_share, 'config', 'nav2_params.yaml')}.items()
     )
 
     frontier = Node(
@@ -43,5 +43,5 @@ def generate_launch_description():
         sim,
         TimerAction(period=8.0, actions=[slam]),
         TimerAction(period=10.0, actions=[nav2]),
-        TimerAction(period=12.0, actions=[frontier]),
+        # Explorer paused while testing Nav2.
     ])
