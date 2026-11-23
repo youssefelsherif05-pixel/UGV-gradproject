@@ -55,7 +55,7 @@ stock Nav2 launch files. **The autonomy layer and everything that makes it a vac
 | [`config/nav2_params.yaml`](config/nav2_params.yaml) | Nav2 retuned for this robot: DWB controller, re-weighted critics, 2D costmaps |
 | [`config/mapper_params_online_async.yaml`](config/mapper_params_online_async.yaml) | SLAM Toolbox tuning — 0.05 m grid, 12 m laser range, loop-closure search |
 | [`config/ekf.yaml`](config/ekf.yaml) | `robot_localization` EKF, with TF publishing deliberately disabled — see below |
-| [`worlds/slam_test.sdf`](worlds/slam_test.sdf) | The 12 &times; 12 m test room with boxes and cylinders to map around |
+| [`worlds/small_test_room.sdf`](worlds/small_test_room.sdf) | The 12 &times; 12 m test room with boxes and cylinders to map around |
 | [`description/`](description/) | Reworked into parameterised xacro macros with Ignition `gpu_lidar` and camera sensors |
 
 ## Engineering notes
@@ -162,7 +162,7 @@ list of what I would do next:
   instead of a per-cell loop — is the obvious next step.
 - **No coverage guarantee.** Frontier exploration maps the room; a vacuum also needs a
   boustrophedon coverage pass over the finished map. That is the next feature, not a bug fix.
-- **Two worlds, two plugin conventions.** `slam_test.sdf` uses Fortress `libignition-gazebo-*`
+- **Two worlds, two plugin conventions.** `small_test_room.sdf` uses Fortress `libignition-gazebo-*`
   plugin names while `empty_world.sdf` uses the newer `gz-sim-*` names. These should be unified
   against one Gazebo version, and with them the bridge type names (`gz.msgs` vs `ignition.msgs`)
   and the sensor frame tag in the xacro (`gz_frame_id` vs `ignition_frame_id`).

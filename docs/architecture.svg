@@ -26,7 +26,7 @@
   <text class="name" x="56" y="116">ign gazebo -s</text>
   <text class="sub"  x="56" y="133">headless server, xvfb-run</text>
   <rect class="box" x="40" y="166" width="184" height="66" rx="7"/>
-  <text class="name" x="56" y="190">slam_test.sdf</text>
+  <text class="name" x="56" y="190">small_test_room.sdf</text>
   <text class="sub"  x="56" y="207">12 × 12 m room, boxes</text>
   <text class="sub"  x="56" y="221">gpu_lidar + RGB camera</text>
 

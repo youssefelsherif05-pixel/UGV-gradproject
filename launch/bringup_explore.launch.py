@@ -7,7 +7,7 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
     pkg_share = get_package_share_directory('articubot_one')
-    world = os.path.join(pkg_share, 'worlds', 'slam_test.sdf')
+    world = os.path.join(pkg_share, 'worlds', 'small_test_room.sdf')
 
     sim = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
